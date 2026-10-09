@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: transparent;
+    }
+
+    .mood-card {
+        width: 100%;
+        max-width: 420px;
+        padding: 24px;
+        border: 1px solid #d9e2f0;
+        border-radius: 18px;
+        background: #f8fbff;
+        color: #53657d;
+    }
+
+    .title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 18px;
+        color: #43556d;
+    }
+
+    .current-mood {
+        text-align: center;
+        padding: 18px;
+        margin-bottom: 18px;
+        border-radius: 14px;
+        background: #edf4fc;
+    }
+
+    .current-emoji {
+        font-size: 32px;
+        margin-bottom: 7px;
+    }
+
+    .current-name {
+        font-size: 17px;
+        font-weight: 600;
+        color: #43556d;
+    }
+
+    .mood-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+    }
+
+    .mood-btn {
+        border: 1px solid #d9e2f0;
+        background: white;
+        color: #667991;
+        border-radius: 12px;
+        padding: 10px 5px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: 0.2s ease;
+    }
+
+    .mood-btn:hover {
+        transform: translateY(-2px);
+        background: #f0f6fd;
+    }
+
+    .mood-btn.active {
+        background: #e3eefb;
+        border-color: #b9cde5;
+        color: #405a78;
+    }
+
+    .emoji {
+        display: block;
+        font-size: 19px;
+        margin-bottom: 4px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="mood-card">
+
+    <div class="title">MOOD ‎.✦ ݁˖</div>
+
+    <div class="current-mood">
+        <div class="current-emoji" id="currentEmoji">☀️</div>
+        <div class="current-name" id="currentName">Happy</div>
+    </div>
+
+    <div class="mood-options">
+
+        <button class="mood-btn active" onclick="setMood(this, '☀️', 'Happy')">
+            <span class="emoji">☀️</span>
+            Happy
+        </button>
+
+        <button class="mood-btn" onclick="setMood(this, '☁️', 'Tired')">
+            <span class="emoji">☁️</span>
+            Tired
+        </button>
+
+        <button class="mood-btn" onclick="setMood(this, '🌙', 'Sleepy')">
+            <span class="emoji">🌙</span>
+            Sleepy
+        </button>
+
+        <button class="mood-btn" onclick="setMood(this, '🎧', 'Chill')">
+            <span class="emoji">🎧</span>
+            Chill
+        </button>
+
+        <button class="mood-btn" onclick="setMood(this, '📚', 'Focused')">
+            <span class="emoji">📚</span>
+            Focused
+        </button>
+
+        <button class="mood-btn" onclick="setMood(this, '💭', 'Meh')">
+            <span class="emoji">💭</span>
+            Meh
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+function setMood(button, emoji, name) {
+
+    document.getElementById("currentEmoji").textContent = emoji;
+    document.getElementById("currentName").textContent = name;
+
+    document.querySelectorAll(".mood-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    localStorage.setItem("feverMood", JSON.stringify({
+        emoji: emoji,
+        name: name
+    }));
+}
+
+window.onload = function() {
+
+    const saved = localStorage.getItem("feverMood");
+
+    if (saved) {
+
+        const mood = JSON.parse(saved);
+
+        document.getElementById("currentEmoji").textContent = mood.emoji;
+        document.getElementById("currentName").textContent = mood.name;
+
+        document.querySelectorAll(".mood-btn").forEach(btn => {
+            if (btn.textContent.includes(mood.name)) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+    }
+};
+</script>
+
+</body>
+</html>
